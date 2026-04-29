@@ -1,17 +1,15 @@
 experiments:
   - name: "baseline_resnet"
-    command: "echo 'Training ResNet...' && sleep 2 && echo 'Done'"
+    command: "echo 'Training ResNet for 100 epochs...' && sleep 10 && echo 'Done'"
     working_dir: "."
     resources:
       gpus: 1
-    metadata:
-      target_epochs: 100
 
   - name: "baseline_vit"
-    command: "echo 'Training ViT...' && sleep 3 && exit 1"
+    command: "echo 'Training ViT...' && sleep 5 && exit 1"
+    resume_command: "echo 'Resuming ViT...' && sleep 10 && exit 0"
     working_dir: "."
     resources:
       gpus: 2
-    metadata:
-      target_epochs: 100
+
 

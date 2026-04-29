@@ -1,11 +1,13 @@
 import subprocess
 import uuid
 import time
+from typing import Dict, Any
 from runresearch.core.experiment import Experiment
 from runresearch.providers.base import BaseProvider
 
 class LocalProvider(BaseProvider):
-    def __init__(self):
+    def __init__(self, profile_config: Dict[str, Any] = None):
+        super().__init__(profile_config)
         self.processes = {}
 
     def submit(self, experiment: Experiment) -> str:
