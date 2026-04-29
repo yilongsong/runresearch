@@ -1,6 +1,7 @@
 import os
 import json
 from enum import Enum
+from typing import Dict, Any
 
 class JobStatus(Enum):
     PENDING = "PENDING"
@@ -9,6 +10,7 @@ class JobStatus(Enum):
     FAILED = "FAILED"
     TIMEOUT = "TIMEOUT"
     UNKNOWN = "UNKNOWN"
+    PAUSED = "PAUSED"
 
 class StateManager:
     def __init__(self, db_path="runresearch_state.json"):
@@ -20,19 +22,39 @@ class StateManager:
             with open(self.db_path, "r") as f:
                 self.state = json.load(f)
         else:
-            self.state = {"jobs": {}}
+            self.state = {"global_pause": False, "experiments": {}}
 
     def _save(self):
         with open(self.db_path, "w") as f:
             json.dump(self.state, f, indent=2)
 
-    def update_job(self, job_id: str, status: JobStatus, details: dict = None):
-        if job_id not in self.state["jobs"]:
-            self.state["jobs"][job_id] = {}
-        self.state["jobs"][job_id]["status"] = status.value
-        if details:
-            self.state["jobs"][job_id].update(details)
+    def register_experiment(self, exp_name: str, exp_dict: Dict[str, Any]):
+        """Registers a new experiment if it doesn't exist."""
+        if exp_name not in self.state["experiments"]:
+            self.state["experiments"][exp_name] = {
+                "config": exp_dict,
+                "current_job_id": None,
+                "status": JobStatus.PENDING.value,
+                "history": []
+            }
+            self._save()
+        else:
+            # Update the config but preserve state
+            self.state["experiments"][exp_name]["config"] = exp_dict
+            self._save()
+
+    def update_job(self, exp_name: str, job_id: str, status: JobStatus):
+        if exp_name in self.state["experiments"]:
+            self.state["experiments"][exp_name]["current_job_id"] = job_id
+            self.state["experiments"][exp_name]["status"] = status.value
+            self._save()
+
+    def set_pause(self, paused: bool):
+        self.state["global_pause"] = paused
         self._save()
 
-    def get_job_status(self, job_id: str) -> str:
-        return self.state["jobs"].get(job_id, {}).get("status", JobStatus.UNKNOWN.value)
+    def get_experiments(self):
+        return self.state["experiments"]
+
+    def is_paused(self) -> bool:
+        return self.state.get("global_pause", False)

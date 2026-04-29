@@ -23,17 +23,24 @@ def main():
     monitor_parser = subparsers.add_parser("monitor")
     monitor_parser.add_argument("--provider", default="local", help="Compute provider")
 
+    dashboard_parser = subparsers.add_parser("dashboard", help="Launch the terminal dashboard")
+
     args = parser.parse_args()
 
     if args.command == "launch":
         experiments = load_experiments(args.config)
         orch = Orchestrator(provider_name=args.provider)
-        orch.launch(experiments)
+        orch.load_and_register(experiments)
+        orch.monitor()  # Automatically start monitoring upon launch
     elif args.command == "monitor":
         orch = Orchestrator(provider_name=args.provider)
         orch.monitor()
+    elif args.command == "dashboard":
+        from runresearch.tui import run_tui
+        run_tui()
     else:
         parser.print_help()
 
 if __name__ == "__main__":
     main()
+
