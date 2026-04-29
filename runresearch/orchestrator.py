@@ -1,16 +1,20 @@
 import time
 from runresearch.core.state import StateManager, JobStatus
 from runresearch.core.experiment import Experiment
+from runresearch.core.config import load_profile
 from runresearch.providers.local import LocalProvider
 from runresearch.providers.slurm import SlurmProvider
 
 class Orchestrator:
-    def __init__(self, provider_name="local"):
+    def __init__(self, provider_name="local", profile_name="default"):
         self.state_manager = StateManager()
+        
+        profile_config = load_profile(provider_name, profile_name)
+        
         if provider_name == "slurm":
-            self.provider = SlurmProvider()
+            self.provider = SlurmProvider(profile_config)
         else:
-            self.provider = LocalProvider()
+            self.provider = LocalProvider(profile_config)
 
     def load_and_register(self, experiments):
         """Loads experiments into the state manager."""
