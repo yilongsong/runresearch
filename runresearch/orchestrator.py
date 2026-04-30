@@ -13,6 +13,9 @@ class Orchestrator:
         
         if provider_name == "slurm":
             self.provider = SlurmProvider(profile_config)
+        elif provider_name == "runpod":
+            from runresearch.providers.runpod import RunPodProvider
+            self.provider = RunPodProvider(profile_config)
         else:
             self.provider = LocalProvider(profile_config)
 

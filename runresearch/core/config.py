@@ -35,3 +35,14 @@ def init_config_dir():
             f.write("  - \"#SBATCH --time=24:00:00\"\n")
             f.write("  - \"#SBATCH --mem=64G\"\n")
             f.write("  - \"#SBATCH --gres=gpu:1\"\n")
+
+    # Create a template runpod profile if it doesn't exist
+    runpod_template_path = profiles_dir / "runpod" / "template.yaml"
+    if not runpod_template_path.exists():
+        with open(runpod_template_path, "w") as f:
+            f.write("# RunPod Profile Configuration\n")
+            f.write("api_key: \"YOUR_RUNPOD_API_KEY_HERE\"\n")
+            f.write("network_volume_id: \"YOUR_VOLUME_ID_HERE\"\n")
+            f.write("gpu_type: \"NVIDIA RTX A5000\"\n")
+            f.write("image: \"runpod/pytorch:2.0.1-py3.10-cuda11.8.0-devel-ubuntu22.04\"\n")
+            f.write("cloud_type: \"COMMUNITY\" # or SECURE\n")
