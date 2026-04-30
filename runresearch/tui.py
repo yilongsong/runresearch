@@ -27,8 +27,9 @@ class DashboardApp(App):
         table = self.query_one(DataTable)
         table.cursor_type = "row"
         table.zebra_stripes = True
-        # Define the columns
-        table.add_columns("Experiment Name", "Current Job ID", "Status")
+        # Define the columns and store their keys for updating later
+        self.col_exp, self.col_id, self.col_status = table.add_columns("Experiment Name", "Current Job ID", "Status")
+        self.added_rows = set()
         
         self.update_table()
         # Automatically refresh the table every 2 seconds
@@ -39,10 +40,10 @@ class DashboardApp(App):
         self.state_manager._load() # Reload to get the absolute latest state
         
         table = self.query_one(DataTable)
-        table.clear()
         
         experiments = self.state_manager.get_experiments()
-        for exp_name, data in experiments.items():
+        # Sort to ensure consistent ordering when adding new rows
+        for exp_name, data in sorted(experiments.items()):
             job_id = data.get("current_job_id") or "None"
             status = data.get("status", "UNKNOWN")
             
@@ -56,7 +57,13 @@ class DashboardApp(App):
             elif status == "PENDING":
                 status = f"[bold yellow]{status}[/bold yellow]"
                 
-            table.add_row(exp_name, str(job_id), status)
+            if exp_name not in self.added_rows:
+                table.add_row(exp_name, str(job_id), status, key=exp_name)
+                self.added_rows.add(exp_name)
+            else:
+                # Update existing cells to preserve cursor position and prevent flickering
+                table.update_cell(exp_name, self.col_id, str(job_id))
+                table.update_cell(exp_name, self.col_status, status)
             
         # Update the header title based on the pause state
         if self.state_manager.is_paused():
