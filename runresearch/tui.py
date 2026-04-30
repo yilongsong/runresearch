@@ -7,7 +7,6 @@ class DashboardApp(App):
     
     # Define keyboard shortcuts for the bottom footer
     BINDINGS = [
-        ("d", "toggle_dark", "Toggle Dark Mode"),
         ("q", "quit", "Quit Dashboard"),
         ("p", "toggle_pause", "Pause/Resume Orchestrator")
     ]
@@ -71,10 +70,6 @@ class DashboardApp(App):
         else:
             self.title = "RunResearch Dashboard 🚀 [ACTIVE]"
 
-    def action_toggle_dark(self) -> None:
-        """An action to toggle dark mode."""
-        self.dark = not self.dark
-        
     def action_toggle_pause(self) -> None:
         """An action to toggle the global orchestrator pause state."""
         self.state_manager._load()
