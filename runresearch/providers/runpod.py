@@ -21,7 +21,7 @@ class RunPodProvider(BaseProvider):
         self.pods = [] # List of dicts tracking running capacity
         self.global_mounted = False
 
-    def _get_or_create_pod(self) -> dict:
+    def _get_or_create_pod(self, experiment: Experiment = None) -> dict:
         max_jobs_per_gpu = self.config.get("max_jobs_per_gpu", 1)
         max_gpus_per_pod = self.config.get("max_gpus_per_pod", 4)
         
@@ -61,8 +61,9 @@ class RunPodProvider(BaseProvider):
                     with open(pub_key_path, "r") as f:
                         env_dict["PUBLIC_KEY"] = f.read().strip()
                 
+                pod_name = f"runresearch-{experiment.name}" if experiment else f"runresearch-fleet-{len(self.pods)+1}"
                 pod_res = self.runpod.create_pod(
-                    name=f"runresearch-fleet-{len(self.pods)+1}",
+                    name=pod_name,
                     image_name=self.config.get("image", "runpod/pytorch:2.0.1-py3.10-cuda11.8.0-devel-ubuntu22.04"),
                     gpu_type_id=self.config.get("gpu_type", "NVIDIA RTX 4090"),
                     cloud_type=self.config.get("cloud_type", "COMMUNITY"),
@@ -146,7 +147,7 @@ class RunPodProvider(BaseProvider):
         return pod_obj
 
     def submit(self, experiment: Experiment) -> str:
-        pod = self._get_or_create_pod()
+        pod = self._get_or_create_pod(experiment)
         
         gpu_to_use = pod["current_gpu_idx"]
         pod["current_gpu_idx"] = (pod["current_gpu_idx"] + 1) % pod["num_gpus"]
