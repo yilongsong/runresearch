@@ -127,10 +127,8 @@ class Orchestrator:
                             self.provider.sync_down(exp, job_id)
                             self.state_manager.update_job(exp_name, job_id, JobStatus.FAILED)
                         
-                        # 4. Intermediate state update (e.g., PENDING -> RUNNING)
                         else:
-                            if current_cluster_status != "UNKNOWN":
-                                self.state_manager.update_job(exp_name, job_id, JobStatus(current_cluster_status))
+                            self.state_manager.update_job(exp_name, job_id, JobStatus(current_cluster_status))
 
             # Sleep lightly to avoid hammering the cluster's squeue API
             time.sleep(15)

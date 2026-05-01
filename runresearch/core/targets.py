@@ -11,7 +11,10 @@ class BaseTargetTracker:
     def is_reached(self, experiment: Experiment) -> bool:
         if experiment.target <= 0:
             return False
-        return self.compute_progress(experiment) >= experiment.target
+        prog = self.compute_progress(experiment)
+        if prog is None:
+            return False
+        return prog >= experiment.target
 
 class TrackerRegistry:
     _trackers: Dict[str, Type[BaseTargetTracker]] = {}

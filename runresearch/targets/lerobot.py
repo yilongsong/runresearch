@@ -61,7 +61,11 @@ class LeRobotEpochTracker(BaseTargetTracker):
                     return 0.0
             else:
                 return 0.0
-                
+        
+        # Map remote /workspace to local ~/runpod_workspace
+        if output_dir.startswith("/workspace"):
+            output_dir = output_dir.replace("/workspace", os.path.expanduser("~/runpod_workspace"), 1)
+            
         checkpoints_dir = os.path.join(output_dir, "checkpoints")
         if not os.path.exists(checkpoints_dir):
             return None

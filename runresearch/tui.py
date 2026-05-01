@@ -54,9 +54,25 @@ class DashboardApp(App):
             target = config.get("target", 1000)
             prog_str = f"{prog:.1f} / {target}"
             
+            import time
+            start_time = data.get("start_time")
+            elapsed_str = ""
+            if status in ["RUNNING", "UNKNOWN"] and start_time:
+                seconds = time.time() - start_time
+                if seconds < 60:
+                    elapsed_str = f" ({int(seconds)}s)"
+                elif seconds < 3600:
+                    elapsed_str = f" ({int(seconds//60)}m)"
+                else:
+                    h = int(seconds//3600)
+                    m = int((seconds%3600)//60)
+                    elapsed_str = f" ({h}h {m}m)"
+                    
             # Inject some rich text colors based on status
             if status == "RUNNING":
-                status = f"[bold green]{status}[/bold green]"
+                status = f"[bold green]{status}{elapsed_str}[/bold green]"
+            elif status == "UNKNOWN":
+                status = f"[dim]{status}{elapsed_str}[/dim]"
             elif status in ["FAILED", "TIMEOUT"]:
                 status = f"[bold red]{status}[/bold red]"
             elif status == "COMPLETED":

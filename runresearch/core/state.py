@@ -45,6 +45,11 @@ class StateManager:
 
     def update_job(self, exp_name: str, job_id: str, status: JobStatus):
         if exp_name in self.state["experiments"]:
+            old_job_id = self.state["experiments"][exp_name].get("current_job_id")
+            if job_id and job_id != old_job_id:
+                import time
+                self.state["experiments"][exp_name]["start_time"] = time.time()
+                
             self.state["experiments"][exp_name]["current_job_id"] = job_id
             self.state["experiments"][exp_name]["status"] = status.value
             self._save()
