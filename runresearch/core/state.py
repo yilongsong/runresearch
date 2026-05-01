@@ -48,6 +48,11 @@ class StateManager:
             self.state["experiments"][exp_name]["current_job_id"] = job_id
             self.state["experiments"][exp_name]["status"] = status.value
             self._save()
+            
+    def update_config_meta(self, exp_name: str, key: str, value: Any):
+        if exp_name in self.state["experiments"]:
+            self.state["experiments"][exp_name]["config"][key] = value
+            self._save()
 
     def set_pause(self, paused: bool):
         self.state["global_pause"] = paused

@@ -50,11 +50,43 @@ class Orchestrator:
                     working_dir=exp_config.get("working_dir", "."),
                     env_vars=exp_config.get("env_vars", {}),
                     resources=exp_config.get("resources", {}),
-                    metadata=exp_config.get("metadata", {})
+                    metadata=exp_config.get("metadata", {}),
+                    status=exp_config.get("status", "active"),
+                    tracker=exp_config.get("tracker", "none"),
+                    target=exp_config.get("target", 0.0),
+                    current_progress=exp_config.get("current_progress", 0.0)
                 )
+                
+                cluster_status_str = state_data.get("status")
+
+                # Check for inactive / finished kills
+                if exp.status in ["inactive", "finished"]:
+                    if job_id and cluster_status_str in [JobStatus.RUNNING.value, JobStatus.PENDING.value]:
+                        print(f"[{exp_name}] Config State is {exp.status}. Terminating active cluster job {job_id}...")
+                        self.provider.cancel(job_id)
+                        self.provider.sync_down(exp, job_id)
+                        self.state_manager.update_job(exp_name, None, JobStatus.COMPLETED)
+                    continue
+
+                # Tracker Evaluation
+                from runresearch.core.targets import TrackerRegistry
+                tracker = TrackerRegistry.get(exp.tracker)
+                if tracker:
+                    progress = tracker.compute_progress(exp)
+                    if progress is not None:
+                        self.state_manager.update_config_meta(exp_name, "current_progress", progress)
+                        
+                    if tracker.is_reached(exp):
+                        print(f"[{exp_name}] Target reached! Terminating...")
+                        if job_id and cluster_status_str in [JobStatus.RUNNING.value, JobStatus.PENDING.value]:
+                            self.provider.cancel(job_id)
+                            self.provider.sync_down(exp, job_id)
+                        self.state_manager.update_job(exp_name, None, JobStatus.COMPLETED)
+                        self.state_manager.update_config_meta(exp_name, "status", "finished")
+                        continue
 
                 # Case A: Fresh Job that needs to be submitted
-                if status_str == JobStatus.PENDING.value and not job_id:
+                if cluster_status_str == JobStatus.PENDING.value and not job_id:
                     print(f"[{exp_name}] Found PENDING job. Initiating sync and submission...")
                     self.provider.sync_up(exp)
                     new_job_id = self.provider.submit(exp)
@@ -63,11 +95,11 @@ class Orchestrator:
                     continue
 
                 # Case B: Active Job that needs to be polled
-                if status_str in [JobStatus.RUNNING.value, JobStatus.PENDING.value] and job_id:
+                if cluster_status_str in [JobStatus.RUNNING.value, JobStatus.PENDING.value] and job_id:
                     current_cluster_status = self.provider.get_status(job_id)
                     
-                    if current_cluster_status != status_str:
-                        print(f"[{exp_name}] Job {job_id} changed status: {status_str} -> {current_cluster_status}")
+                    if current_cluster_status != cluster_status_str:
+                        print(f"[{exp_name}] Job {job_id} changed status: {cluster_status_str} -> {current_cluster_status}")
                         
                         # 1. Job Finished Cleanly
                         if current_cluster_status == JobStatus.COMPLETED.value:

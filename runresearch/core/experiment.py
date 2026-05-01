@@ -11,6 +11,12 @@ class Experiment:
     resources: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
+    # Target Scheme Additions
+    status: str = "active" # active, inactive, finished
+    tracker: str = "none" # e.g. 'lerobot'
+    target: float = 0.0
+    current_progress: float = 0.0
+
     def to_dict(self):
         return {
             "name": self.name,
@@ -19,5 +25,9 @@ class Experiment:
             "working_dir": self.working_dir,
             "env_vars": self.env_vars,
             "resources": self.resources,
-            "metadata": self.metadata
+            "metadata": self.metadata,
+            "status": self.status,
+            "tracker": self.tracker,
+            "target": self.target,
+            "current_progress": self.current_progress
         }
