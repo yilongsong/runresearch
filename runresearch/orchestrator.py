@@ -87,6 +87,10 @@ class Orchestrator:
 
                 # Case A: Fresh Job that needs to be submitted
                 if cluster_status_str == JobStatus.PENDING.value and not job_id:
+                    if exp.current_progress > 0 and exp.resume_command:
+                        print(f"[{exp_name}] Checkpoint exists (progress {exp.current_progress} > 0). Using resume_command for fresh submission.")
+                        exp.command = exp.resume_command
+                        
                     print(f"[{exp_name}] Found PENDING job. Initiating sync and submission...")
                     self.provider.sync_up(exp)
                     new_job_id = self.provider.submit(exp)

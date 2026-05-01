@@ -9,7 +9,8 @@ class DashboardApp(App):
     BINDINGS = [
         ("q", "quit", "Quit Dashboard"),
         ("p", "toggle_pause", "Pause/Resume Orchestrator"),
-        ("a", "toggle_active", "Toggle Active/Inactive")
+        ("a", "toggle_active", "Toggle Active/Inactive"),
+        ("r", "restart_job", "Restart Job (Clear ID)")
     ]
 
     def __init__(self):
@@ -133,6 +134,30 @@ class DashboardApp(App):
                     yaml.dump(data, f, default_flow_style=False, sort_keys=False)
             except Exception as e:
                 pass
+                
+            self.update_table()
+
+    def action_restart_job(self) -> None:
+        table = self.query_one(DataTable)
+        try:
+            row_key = table.coordinate_to_cell_key(table.cursor_coordinate).row_key
+            exp_name = row_key.value
+        except Exception:
+            return
+            
+        self.state_manager._load()
+        experiments = self.state_manager.get_experiments()
+        if exp_name in experiments:
+            # First set config status to active to ensure it actually runs
+            self.state_manager.update_config_meta(exp_name, "status", "active")
+            
+            # Wipe job ID and set to PENDING
+            self.state_manager.update_job(exp_name, None, __import__("runresearch.core.state", fromlist=["JobStatus"]).JobStatus.PENDING)
+            
+            # Wipe start_time
+            if "start_time" in self.state_manager.state["experiments"][exp_name]:
+                del self.state_manager.state["experiments"][exp_name]["start_time"]
+                self.state_manager._save()
                 
             self.update_table()
 

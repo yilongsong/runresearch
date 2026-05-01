@@ -155,14 +155,30 @@ class RunPodProvider(BaseProvider):
         for k, v in experiment.env_vars.items():
             env_str += f"{k}={v} "
             
+        # I/O Optimization: Copy dataset to local ephemeral NVMe
+        cmd_str = experiment.command
+        copy_cmd = ""
+        parts = cmd_str.split()
+        if "--dataset.repo_id" in parts:
+            try:
+                idx = parts.index("--dataset.repo_id")
+                repo_path = parts[idx+1]
+                if repo_path.startswith("/workspace/datasets/"):
+                    local_path = repo_path.replace("/workspace/datasets", "/tmp")
+                    parts[idx+1] = local_path
+                    cmd_str = " ".join(parts)
+                    copy_cmd = f"if [ ! -d {local_path} ]; then cp -r {repo_path} {local_path}; fi && "
+            except ValueError:
+                pass
+                
         log_file = f"/workspace/outputs/{experiment.name}.log"
-        cmd = f"{env_str} nohup {experiment.command} > {log_file} 2>&1 < /dev/null &"
+        cmd = f"{env_str} nohup {cmd_str} > {log_file} 2>&1 < /dev/null &"
         
         setup_cmd = self.config.get("setup_commands", "")
         if setup_cmd:
-            full_dispatch_cmd = f"nohup bash -c '{setup_cmd} && mkdir -p /workspace/outputs && cd {experiment.working_dir} && {cmd}' > /dev/null 2>&1 < /dev/null &"
+            full_dispatch_cmd = f"nohup bash -c '{setup_cmd} && mkdir -p /workspace/outputs && {copy_cmd}cd {experiment.working_dir} && {cmd}' > /dev/null 2>&1 < /dev/null &"
         else:
-            full_dispatch_cmd = f"nohup bash -c 'mkdir -p /workspace/outputs && cd {experiment.working_dir} && {cmd}' > /dev/null 2>&1 < /dev/null &"
+            full_dispatch_cmd = f"nohup bash -c 'mkdir -p /workspace/outputs && {copy_cmd}cd {experiment.working_dir} && {cmd}' > /dev/null 2>&1 < /dev/null &"
         
         print(f"[RunPod AutoScaler] Dispatched {experiment.name} to Pod {pod['id']} -> GPU {gpu_to_use}")
         
