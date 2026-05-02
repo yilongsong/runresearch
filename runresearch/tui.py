@@ -10,7 +10,8 @@ class DashboardApp(App):
         ("q", "quit", "Quit Dashboard"),
         ("p", "toggle_pause", "Pause/Resume Orchestrator"),
         ("a", "toggle_active", "Toggle Active/Inactive"),
-        ("r", "restart_job", "Restart Job (Clear ID)")
+        ("r", "restart_job", "Restart Job (Clear ID)"),
+        ("R", "force_restart", "Force Restart (Kill & Resume)")
     ]
 
     def __init__(self):
@@ -32,9 +33,32 @@ class DashboardApp(App):
         self.col_exp, self.col_active, self.col_id, self.col_status, self.col_prog = table.add_columns("Experiment", "Active", "Job ID", "Status", "Progress")
         self.added_rows = set()
         
+        self.personal_usage_str = ""
         self.update_table()
         # Automatically refresh the table every 2 seconds
         self.set_interval(2.0, self.update_table)
+        import threading
+        def poll_usage():
+            import subprocess
+            import os
+            import time
+            while True:
+                try:
+                    mount_path = os.path.expanduser("~/runpod_workspace")
+                    if os.path.exists(mount_path):
+                        res = subprocess.run(["du", "-sb", mount_path], capture_output=True, text=True, timeout=30)
+                        if res.returncode == 0:
+                            bytes_used = int(res.stdout.split()[0])
+                            gb_used = bytes_used / (1024**3)
+                            self.personal_usage_str = f" | Usage: {gb_used:.1f}GB"
+                        else:
+                            self.personal_usage_str = ""
+                except Exception:
+                    pass
+                time.sleep(60)
+        
+        t = threading.Thread(target=poll_usage, daemon=True)
+        t.start()
 
     def update_table(self) -> None:
         """Update the data table with the latest state from the Orchestrator."""
@@ -70,7 +94,9 @@ class DashboardApp(App):
                     elapsed_str = f" ({h}h {m}m)"
                     
             # Inject some rich text colors based on status
-            if status == "RUNNING":
+            if config.get("force_restart", False):
+                status = "[bold red]RESTARTING...[/bold red]"
+            elif status == "RUNNING":
                 status = f"[bold green]{status}{elapsed_str}[/bold green]"
             elif status == "UNKNOWN":
                 status = f"[dim]{status}{elapsed_str}[/dim]"
@@ -91,11 +117,12 @@ class DashboardApp(App):
                 table.update_cell(exp_name, self.col_status, status)
                 table.update_cell(exp_name, self.col_prog, prog_str)
             
+        running_count = sum(1 for d in experiments.values() if d.get("status") == "RUNNING")
+        pending_count = sum(1 for d in experiments.values() if d.get("status") == "PENDING" and d.get("config", {}).get("status", "active") == "active")
+
         # Update the header title based on the pause state
-        if self.state_manager.is_paused():
-            self.title = "RunResearch Dashboard ⚠️ [PAUSED]"
-        else:
-            self.title = "RunResearch Dashboard 🚀 [ACTIVE]"
+        title_prefix = "RunResearch Dashboard ⚠️ [PAUSED]" if self.state_manager.is_paused() else "RunResearch Dashboard 🚀 [ACTIVE]"
+        self.title = f"{title_prefix} | Running: {running_count} | Pending: {pending_count}{self.personal_usage_str}"
 
     def action_toggle_pause(self) -> None:
         """An action to toggle the global orchestrator pause state."""
@@ -160,6 +187,22 @@ class DashboardApp(App):
                 self.state_manager._save()
                 
             self.update_table()
+
+    def action_force_restart(self) -> None:
+        table = self.query_one(DataTable)
+        try:
+            row_key = table.coordinate_to_cell_key(table.cursor_coordinate).row_key
+            exp_name = row_key.value
+        except Exception:
+            return
+            
+        self.state_manager._load()
+        experiments = self.state_manager.get_experiments()
+        if exp_name in experiments:
+            # Set force_restart flag so orchestrator intercepts and kills the pod
+            self.state_manager.update_config_meta(exp_name, "force_restart", True)
+            self.update_table()
+
 
 def run_tui():
     app = DashboardApp()

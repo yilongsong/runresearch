@@ -1,5 +1,6 @@
 import os
 import json
+import threading
 from enum import Enum
 from typing import Dict, Any
 
@@ -15,18 +16,21 @@ class JobStatus(Enum):
 class StateManager:
     def __init__(self, db_path="runresearch_state.json"):
         self.db_path = db_path
+        self._lock = threading.RLock()
         self._load()
 
     def _load(self):
-        if os.path.exists(self.db_path):
-            with open(self.db_path, "r") as f:
-                self.state = json.load(f)
-        else:
-            self.state = {"global_pause": False, "experiments": {}}
+        with self._lock:
+            if os.path.exists(self.db_path):
+                with open(self.db_path, "r") as f:
+                    self.state = json.load(f)
+            else:
+                self.state = {"global_pause": False, "experiments": {}}
 
     def _save(self):
-        with open(self.db_path, "w") as f:
-            json.dump(self.state, f, indent=2)
+        with self._lock:
+            with open(self.db_path, "w") as f:
+                json.dump(self.state, f, indent=2)
 
     def register_experiment(self, exp_name: str, exp_dict: Dict[str, Any]):
         """Registers a new experiment if it doesn't exist."""
@@ -44,6 +48,7 @@ class StateManager:
             self._save()
 
     def update_job(self, exp_name: str, job_id: str, status: JobStatus):
+        self._load()
         if exp_name in self.state["experiments"]:
             old_job_id = self.state["experiments"][exp_name].get("current_job_id")
             if job_id and job_id != old_job_id:
@@ -55,6 +60,7 @@ class StateManager:
             self._save()
             
     def update_config_meta(self, exp_name: str, key: str, value: Any):
+        self._load()
         if exp_name in self.state["experiments"]:
             self.state["experiments"][exp_name]["config"][key] = value
             self._save()

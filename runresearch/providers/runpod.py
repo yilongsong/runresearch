@@ -2,6 +2,7 @@ import os
 import subprocess
 import time
 from typing import Dict, Any
+import threading
 from runresearch.core.experiment import Experiment
 from runresearch.providers.base import BaseProvider
 
@@ -20,18 +21,42 @@ class RunPodProvider(BaseProvider):
             
         self.pods = [] # List of dicts tracking running capacity
         self.global_mounted = False
+        self._lock = threading.RLock()
 
-    def _get_or_create_pod(self, experiment: Experiment = None) -> dict:
+    def _restore_pod(self, pod_id: str, job_id: str = None) -> dict:
+        try:
+            status = self.runpod.get_pod(pod_id)
+            if status and status.get("desiredStatus") == "RUNNING" and status.get("runtime"):
+                ssh_ip, ssh_port = None, None
+                for p in status["runtime"].get("ports", []):
+                    if p.get("privatePort") == 22:
+                        ssh_ip = p.get("ip")
+                        ssh_port = p.get("publicPort")
+                        break
+                        
+                if ssh_ip and ssh_port:
+                    pod_obj = {
+                        "id": pod_id,
+                        "ssh_ip": ssh_ip,
+                        "ssh_port": ssh_port,
+                        "num_gpus": status.get("gpuCount", 1),
+                        "current_gpu_idx": 0,
+                        "running_jobs": set()
+                    }
+                    if job_id:
+                        pod_obj["running_jobs"].add(job_id)
+                    self.pods.append(pod_obj)
+                    return pod_obj
+        except Exception as e:
+            print(f"[_restore_pod] Error restoring pod {pod_id}: {e}")
+            pass
+        return None
+
+    def _create_new_pod(self, experiment: Experiment = None) -> dict:
         max_jobs_per_gpu = self.config.get("max_jobs_per_gpu", 1)
         max_gpus_per_pod = self.config.get("max_gpus_per_pod", 4)
         
-        # 1. Find existing pod with capacity
-        for pod in self.pods:
-            capacity = pod["num_gpus"] * max_jobs_per_gpu
-            if len(pod["running_jobs"]) < capacity:
-                return pod
-                
-        # 2. No capacity available, dynamically calculate exactly what we need
+        # Dynamically calculate exactly what we need
         import json
         import math
         needed_gpus = max_gpus_per_pod
@@ -121,19 +146,21 @@ class RunPodProvider(BaseProvider):
         time.sleep(10) # Give RunPod's TCP proxy a few seconds to stabilize
         
         # Only mount SSHFS for the VERY FIRST pod, since they all share the identical network volume!
-        if not self.global_mounted:
-            print("[RunPod AutoScaler] Auto-mounting Network Volume locally for Telemetry...")
-            local_mount = os.path.expanduser("~/runpod_workspace")
-            subprocess.run(f"fusermount -uz {local_mount} 2>/dev/null", shell=True)
-            try:
-                os.makedirs(local_mount, exist_ok=True)
-            except Exception:
-                pass
-            subprocess.run(
-                f"sshfs root@{ssh_ip}:/workspace {local_mount} -p {ssh_port} -o StrictHostKeyChecking=no -o PasswordAuthentication=no -o BatchMode=yes -o reconnect", 
-                shell=True
-            )
-            self.global_mounted = True
+        with self._lock:
+            if not self.global_mounted:
+                print("[RunPod AutoScaler] Auto-mounting Network Volume locally for Telemetry...")
+                local_mount = os.path.expanduser("~/runpod_workspace")
+                subprocess.run(f"fusermount -uz {local_mount} 2>/dev/null", shell=True)
+                try:
+                    os.makedirs(local_mount, exist_ok=True)
+                except Exception:
+                    pass
+                subprocess.run(
+                    f"sshfs root@{ssh_ip}:/workspace {local_mount} -p {ssh_port} -o StrictHostKeyChecking=no -o PasswordAuthentication=no -o BatchMode=yes -o reconnect", 
+                    shell=True
+                )
+                self.global_mounted = True
+                self.mount_pod_id = pod_id
             
         pod_obj = {
             "id": pod_id,
@@ -143,15 +170,36 @@ class RunPodProvider(BaseProvider):
             "current_gpu_idx": 0,
             "running_jobs": set()
         }
-        self.pods.append(pod_obj)
         return pod_obj
 
     def submit(self, experiment: Experiment) -> str:
-        pod = self._get_or_create_pod(experiment)
+        pod = None
+        max_jobs_per_gpu = self.config.get("max_jobs_per_gpu", 1)
         
-        gpu_to_use = pod["current_gpu_idx"]
-        pod["current_gpu_idx"] = (pod["current_gpu_idx"] + 1) % pod["num_gpus"]
-        
+        # 1. Quick lock: Find existing capacity
+        with self._lock:
+            for p in self.pods:
+                capacity = p["num_gpus"] * max_jobs_per_gpu
+                if len(p["running_jobs"]) < capacity:
+                    pod = p
+                    break
+            
+            if pod:
+                gpu_to_use = pod["current_gpu_idx"]
+                pod["current_gpu_idx"] = (pod["current_gpu_idx"] + 1) % pod["num_gpus"]
+                job_id = f"{pod['id']}_{experiment.name}"
+                pod["running_jobs"].add(job_id) # Reserve immediately
+                
+        # 2. Slow path out-of-lock: Create new pod via API & SSH
+        if not pod:
+            pod = self._create_new_pod(experiment)
+            with self._lock:
+                gpu_to_use = pod["current_gpu_idx"]
+                pod["current_gpu_idx"] = (pod["current_gpu_idx"] + 1) % pod["num_gpus"]
+                job_id = f"{pod['id']}_{experiment.name}"
+                pod["running_jobs"].add(job_id) # Reserve immediately
+                self.pods.append(pod)
+            
         env_str = f"CUDA_VISIBLE_DEVICES={gpu_to_use} "
         for k, v in experiment.env_vars.items():
             env_str += f"{k}={v} "
@@ -194,33 +242,55 @@ class RunPodProvider(BaseProvider):
             time.sleep(3)
             
         time.sleep(3)
-        
-        job_id = f"{pod['id']}_{experiment.name}"
-        pod["running_jobs"].add(job_id)
         return job_id
 
     def get_status(self, job_id: str) -> str:
         for pod in self.pods:
             if job_id in pod["running_jobs"]:
                 return "RUNNING"
+                
+        # If orchestrator restarted, self.pods is empty. Restore it!
+        pod_id = job_id.split("_", 1)[0]
+        restored_pod = self._restore_pod(pod_id, job_id)
+        if restored_pod:
+            return "RUNNING"
+            
         return "UNKNOWN"
 
     def cancel(self, job_id: str):
-        for pod in self.pods:
-            if job_id in pod["running_jobs"]:
-                exp_name = job_id.split("_")[1]
-                kill_cmd = f"pkill -f {exp_name}"
-                subprocess.run(f"ssh -p {pod['ssh_port']} -o StrictHostKeyChecking=no root@{pod['ssh_ip']} '{kill_cmd}'", shell=True)
-                pod["running_jobs"].remove(job_id)
+        pod_id = job_id.split("_", 1)[0]
+        pod_to_cancel = next((p for p in self.pods if p["id"] == pod_id), None)
+        
+        if not pod_to_cancel:
+            pod_to_cancel = self._restore_pod(pod_id, job_id)
+            
+        if pod_to_cancel:
+            exp_name = job_id.split("_", 1)[1]
+            kill_cmd = f"pkill -f {exp_name}"
+            subprocess.run(f"ssh -p {pod_to_cancel['ssh_port']} -o StrictHostKeyChecking=no root@{pod_to_cancel['ssh_ip']} '{kill_cmd}'", shell=True)
+            
+            if job_id in pod_to_cancel["running_jobs"]:
+                pod_to_cancel["running_jobs"].remove(job_id)
+            
+            # Auto-Scaler Cleanup
+            if len(pod_to_cancel["running_jobs"]) == 0:
+                print(f"[RunPod AutoScaler] All jobs on Pod {pod_to_cancel['id']} finished. Terminating Pod to save money...")
+                self.runpod.terminate_pod(pod_to_cancel["id"])
+                if pod_to_cancel in self.pods:
+                    self.pods.remove(pod_to_cancel)
                 
-                # Auto-Scaler Cleanup
-                if len(pod["running_jobs"]) == 0:
-                    print(f"[RunPod AutoScaler] All jobs on Pod {pod['id']} finished. Terminating Pod to save money...")
-                    self.runpod.terminate_pod(pod["id"])
-                    self.pods.remove(pod)
+                if getattr(self, "mount_pod_id", None) == pod_to_cancel["id"]:
+                    local_mount = os.path.expanduser("~/runpod_workspace")
+                    subprocess.run(f"fusermount -uz {local_mount} 2>/dev/null", shell=True)
                     
-                    if len(self.pods) == 0:
-                        local_mount = os.path.expanduser("~/runpod_workspace")
-                        subprocess.run(f"fusermount -u {local_mount} 2>/dev/null", shell=True)
+                    if len(self.pods) > 0:
+                        new_pod = self.pods[0]
+                        print(f"[RunPod AutoScaler] Primary mount pod terminated! Failover SSHFS remount to active Pod {new_pod['id']}...")
+                        subprocess.run(
+                            f"sshfs root@{new_pod['ssh_ip']}:/workspace {local_mount} -p {new_pod['ssh_port']} -o StrictHostKeyChecking=no -o PasswordAuthentication=no -o BatchMode=yes -o reconnect", 
+                            shell=True
+                        )
+                        self.mount_pod_id = new_pod["id"]
+                    else:
                         self.global_mounted = False
-                return
+                        self.mount_pod_id = None

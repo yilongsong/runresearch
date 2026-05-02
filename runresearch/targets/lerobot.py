@@ -67,34 +67,38 @@ class LeRobotEpochTracker(BaseTargetTracker):
             output_dir = output_dir.replace("/workspace", os.path.expanduser("~/runpod_workspace"), 1)
             
         checkpoints_dir = os.path.join(output_dir, "checkpoints")
-        if not os.path.exists(checkpoints_dir):
-            return None
-            
-        highest_step = 0
-        latest_ckpt_path = None
-        for subdir in os.listdir(checkpoints_dir):
-            if subdir.isdigit():
-                step_val = int(subdir)
-                if step_val > highest_step:
-                    highest_step = step_val
-                    latest_ckpt_path = os.path.join(checkpoints_dir, subdir)
-                    
-        if highest_step == 0 or latest_ckpt_path is None:
-            return None
-            
-        cfg_path = os.path.join(latest_ckpt_path, "pretrained_model", "train_config.json")
-        safe_tensor_path = os.path.join(latest_ckpt_path, "pretrained_model", "model.safetensors")
-        if not os.path.exists(cfg_path) or not os.path.exists(safe_tensor_path):
-            return 0.0
-            
         try:
-            with open(cfg_path) as f:
-                cfg = json.load(f)
-            batch_size = cfg.get("batch_size")
-            if not batch_size: 
+            if not os.path.exists(checkpoints_dir):
+                return None
+                
+            highest_step = 0
+            latest_ckpt_path = None
+            for subdir in os.listdir(checkpoints_dir):
+                if subdir.isdigit():
+                    step_val = int(subdir)
+                    if step_val > highest_step:
+                        highest_step = step_val
+                        latest_ckpt_path = os.path.join(checkpoints_dir, subdir)
+                        
+            if highest_step == 0 or latest_ckpt_path is None:
+                return None
+                
+            cfg_path = os.path.join(latest_ckpt_path, "pretrained_model", "train_config.json")
+            safe_tensor_path = os.path.join(latest_ckpt_path, "pretrained_model", "model.safetensors")
+            if not os.path.exists(cfg_path) or not os.path.exists(safe_tensor_path):
                 return 0.0
-        except Exception:
-            return 0.0
+                
+            try:
+                with open(cfg_path) as f:
+                    cfg = json.load(f)
+                batch_size = cfg.get("batch_size")
+                if not batch_size: 
+                    return 0.0
+            except Exception:
+                return 0.0
+        except OSError:
+            # Handle [Errno 5] Input/output error from broken SSHFS mounts
+            return None
             
         # Dynamically extract dataset_repo from the bash command
         dataset_repo = experiment.metadata.get("dataset_repo")
@@ -109,6 +113,10 @@ class LeRobotEpochTracker(BaseTargetTracker):
                     return 0.0
             else:
                 return 0.0
+                
+        # Map remote /workspace to local ~/runpod_workspace
+        if dataset_repo.startswith("/workspace"):
+            dataset_repo = dataset_repo.replace("/workspace", os.path.expanduser("~/runpod_workspace"), 1)
                 
         episodes_str = experiment.metadata.get("episodes")
         if not episodes_str:

@@ -195,62 +195,6 @@ experiments:
   status: active
   target: 1500
   tracker: lerobot
-- name: sorting_c20_k1
-  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/sorting_c20_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k1
-  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
-    --config_path=/workspace/outputs/sorting_c20_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/sorting_c20_k1 --output_dir /workspace/outputs/sorting_c20_k1
-    --save_freq 2000 --steps 1000000
-  working_dir: /workspace/lerobot_trossen
-  resources:
-    gpus: 1
-  status: inactive
-  target: 2000
-  tracker: lerobot
-- name: sorting_c20_k2
-  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/sorting_c20_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k2
-  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
-    --config_path=/workspace/outputs/sorting_c20_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/sorting_c20_k2 --output_dir /workspace/outputs/sorting_c20_k2
-    --save_freq 2000 --steps 1000000
-  working_dir: /workspace/lerobot_trossen
-  resources:
-    gpus: 1
-  status: inactive
-  target: 2000
-  tracker: lerobot
-- name: sorting_c20_k5
-  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/sorting_c20_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k5
-  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
-    --config_path=/workspace/outputs/sorting_c20_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/sorting_c20_k5 --output_dir /workspace/outputs/sorting_c20_k5
-    --save_freq 2000 --steps 1000000
-  working_dir: /workspace/lerobot_trossen
-  resources:
-    gpus: 1
-  status: inactive
-  target: 2000
-  tracker: lerobot
-- name: sorting_c20_k10
-  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/sorting_c20_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k10
-  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
-    --config_path=/workspace/outputs/sorting_c20_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/sorting_c20_k10 --output_dir /workspace/outputs/sorting_c20_k10
-    --save_freq 2000 --steps 1000000
-  working_dir: /workspace/lerobot_trossen
-  resources:
-    gpus: 1
-  status: inactive
-  target: 2000
-  tracker: lerobot
 - name: sorting_c40_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
     /workspace/datasets/sorting_c40_k1 --policy.type crowd_diffusion --steps 1000000
@@ -276,7 +220,7 @@ experiments:
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: sorting_c40_k5
@@ -290,7 +234,7 @@ experiments:
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: sorting_c40_k10
@@ -379,12 +323,12 @@ experiments:
   tracker: lerobot
 - name: insertion_c20_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c20_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k1
+    /workspace/datasets/insertion_c60_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c20_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c20_k1 --output_dir /workspace/outputs/insertion_c20_k1
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/insertion_c60_k1 --output_dir /workspace/outputs/insertion_c20_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -393,12 +337,12 @@ experiments:
   tracker: lerobot
 - name: insertion_c20_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c20_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k2
+    /workspace/datasets/insertion_c60_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c20_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c20_k2 --output_dir /workspace/outputs/insertion_c20_k2
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/insertion_c60_k2 --output_dir /workspace/outputs/insertion_c20_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -407,12 +351,12 @@ experiments:
   tracker: lerobot
 - name: insertion_c20_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c20_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k5
+    /workspace/datasets/insertion_c60_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c20_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c20_k5 --output_dir /workspace/outputs/insertion_c20_k5
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/insertion_c60_k5 --output_dir /workspace/outputs/insertion_c20_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -421,12 +365,12 @@ experiments:
   tracker: lerobot
 - name: insertion_c20_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c20_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k10
+    /workspace/datasets/insertion_c60_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c20_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c20_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c20_k10 --output_dir /workspace/outputs/insertion_c20_k10
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/insertion_c60_k10 --output_dir /workspace/outputs/insertion_c20_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -435,180 +379,180 @@ experiments:
   tracker: lerobot
 - name: insertion_c30_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c30_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    /workspace/datasets/insertion_c60_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c30_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c30_k1 --output_dir /workspace/outputs/insertion_c30_k1
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k1 --output_dir /workspace/outputs/insertion_c30_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c30_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c30_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    /workspace/datasets/insertion_c60_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c30_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c30_k2 --output_dir /workspace/outputs/insertion_c30_k2
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k2 --output_dir /workspace/outputs/insertion_c30_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c30_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c30_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    /workspace/datasets/insertion_c60_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c30_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c30_k5 --output_dir /workspace/outputs/insertion_c30_k5
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k5 --output_dir /workspace/outputs/insertion_c30_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c30_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c30_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    /workspace/datasets/insertion_c60_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c30_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c30_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c30_k10 --output_dir /workspace/outputs/insertion_c30_k10
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,44,45,50,52,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k10 --output_dir /workspace/outputs/insertion_c30_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c40_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c40_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    /workspace/datasets/insertion_c60_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c40_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c40_k1 --output_dir /workspace/outputs/insertion_c40_k1
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k1 --output_dir /workspace/outputs/insertion_c40_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c40_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c40_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    /workspace/datasets/insertion_c60_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c40_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c40_k2 --output_dir /workspace/outputs/insertion_c40_k2
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k2 --output_dir /workspace/outputs/insertion_c40_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c40_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c40_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    /workspace/datasets/insertion_c60_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c40_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c40_k5 --output_dir /workspace/outputs/insertion_c40_k5
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k5 --output_dir /workspace/outputs/insertion_c40_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c40_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c40_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    /workspace/datasets/insertion_c60_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c40_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c40_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c40_k10 --output_dir /workspace/outputs/insertion_c40_k10
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,29,30,31,32,33,38,41,42,43,44,45,46,48,50,52,54,55,56]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k10 --output_dir /workspace/outputs/insertion_c40_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c50_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c50_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    /workspace/datasets/insertion_c60_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c50_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c50_k1 --output_dir /workspace/outputs/insertion_c50_k1
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k1 --output_dir /workspace/outputs/insertion_c50_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c50_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c50_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    /workspace/datasets/insertion_c60_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c50_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c50_k2 --output_dir /workspace/outputs/insertion_c50_k2
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k2 --output_dir /workspace/outputs/insertion_c50_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c50_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c50_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    /workspace/datasets/insertion_c60_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c50_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c50_k5 --output_dir /workspace/outputs/insertion_c50_k5
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k5 --output_dir /workspace/outputs/insertion_c50_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c50_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/insertion_c50_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    /workspace/datasets/insertion_c60_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c50_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c50_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/insertion_c50_k10 --output_dir /workspace/outputs/insertion_c50_k10
-    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,29,30,31,32,33,36,38,39,40,41,42,43,44,45,46,48,49,50,51,52,53,54,55,56,57,59]
+    --dataset.repo_id /workspace/datasets/insertion_c60_k10 --output_dir /workspace/outputs/insertion_c50_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c60_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
     /workspace/datasets/insertion_c60_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k1
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c60_k1/checkpoints/last/pretrained_model
     --dataset.repo_id /workspace/datasets/insertion_c60_k1 --output_dir /workspace/outputs/insertion_c60_k1
-    --save_freq 2000 --steps 1000000
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -618,39 +562,39 @@ experiments:
 - name: insertion_c60_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
     /workspace/datasets/insertion_c60_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k2
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c60_k2/checkpoints/last/pretrained_model
     --dataset.repo_id /workspace/datasets/insertion_c60_k2 --output_dir /workspace/outputs/insertion_c60_k2
-    --save_freq 2000 --steps 1000000
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c60_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
     /workspace/datasets/insertion_c60_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k5
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c60_k5/checkpoints/last/pretrained_model
     --dataset.repo_id /workspace/datasets/insertion_c60_k5 --output_dir /workspace/outputs/insertion_c60_k5
-    --save_freq 2000 --steps 1000000
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 3000
   tracker: lerobot
 - name: insertion_c60_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
     /workspace/datasets/insertion_c60_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k10
+    --save_freq 2000 --output_dir /workspace/outputs/insertion_c60_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/insertion_c60_k10/checkpoints/last/pretrained_model
     --dataset.repo_id /workspace/datasets/insertion_c60_k10 --output_dir /workspace/outputs/insertion_c60_k10
-    --save_freq 2000 --steps 1000000
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
@@ -687,58 +631,58 @@ experiments:
   tracker: lerobot
 - name: switches_c20_k1
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/switches_c20_k1 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k1
+    /workspace/datasets/switches_c50_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/switches_c20_k1/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/switches_c20_k1 --output_dir /workspace/outputs/switches_c20_k1
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/switches_c50_k1 --output_dir /workspace/outputs/switches_c20_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c20_k2
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/switches_c20_k2 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k2
+    /workspace/datasets/switches_c50_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/switches_c20_k2/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/switches_c20_k2 --output_dir /workspace/outputs/switches_c20_k2
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/switches_c50_k2 --output_dir /workspace/outputs/switches_c20_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c20_k5
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/switches_c20_k5 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k5
+    /workspace/datasets/switches_c50_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/switches_c20_k5/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/switches_c20_k5 --output_dir /workspace/outputs/switches_c20_k5
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/switches_c50_k5 --output_dir /workspace/outputs/switches_c20_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c20_k10
   command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
-    /workspace/datasets/switches_c20_k10 --policy.type crowd_diffusion --steps 1000000
-    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k10
+    /workspace/datasets/switches_c50_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c20_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
     --config_path=/workspace/outputs/switches_c20_k10/checkpoints/last/pretrained_model
-    --dataset.repo_id /workspace/datasets/switches_c20_k10 --output_dir /workspace/outputs/switches_c20_k10
-    --save_freq 2000 --steps 1000000
+    --dataset.repo_id /workspace/datasets/switches_c50_k10 --output_dir /workspace/outputs/switches_c20_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c50_k1
@@ -766,7 +710,7 @@ experiments:
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c50_k5
@@ -780,7 +724,7 @@ experiments:
   working_dir: /workspace/lerobot_trossen
   resources:
     gpus: 1
-  status: inactive
+  status: active
   target: 2000
   tracker: lerobot
 - name: switches_c50_k10
@@ -795,5 +739,229 @@ experiments:
   resources:
     gpus: 1
   status: active
+  target: 2000
+  tracker: lerobot
+- name: sorting_c20_k1
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c20_k1/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k1 --output_dir /workspace/outputs/sorting_c20_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c20_k2
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c20_k2/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k2 --output_dir /workspace/outputs/sorting_c20_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c20_k5
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c20_k5/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k5 --output_dir /workspace/outputs/sorting_c20_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c20_k10
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c20_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c20_k10/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k10 --output_dir /workspace/outputs/sorting_c20_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c30_k1
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c30_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c30_k1/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k1 --output_dir /workspace/outputs/sorting_c30_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c30_k2
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c30_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c30_k2/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k2 --output_dir /workspace/outputs/sorting_c30_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c30_k5
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c30_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c30_k5/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k5 --output_dir /workspace/outputs/sorting_c30_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: sorting_c30_k10
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/sorting_c40_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/sorting_c30_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/sorting_c30_k10/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/sorting_c40_k10 --output_dir /workspace/outputs/sorting_c30_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c30_k1
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c30_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c30_k1/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k1 --output_dir /workspace/outputs/switches_c30_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c30_k2
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c30_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c30_k2/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k2 --output_dir /workspace/outputs/switches_c30_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c30_k5
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c30_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c30_k5/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k5 --output_dir /workspace/outputs/switches_c30_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c30_k10
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c30_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c30_k10/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k10 --output_dir /workspace/outputs/switches_c30_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c40_k1
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k1 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c40_k1 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c40_k1/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k1 --output_dir /workspace/outputs/switches_c40_k1
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c40_k2
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k2 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c40_k2 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c40_k2/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k2 --output_dir /workspace/outputs/switches_c40_k2
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c40_k5
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k5 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c40_k5 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c40_k5/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k5 --output_dir /workspace/outputs/switches_c40_k5
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
+  target: 2000
+  tracker: lerobot
+- name: switches_c40_k10
+  status: active
+  command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --dataset.repo_id
+    /workspace/datasets/switches_c50_k10 --policy.type crowd_diffusion --steps 1000000
+    --save_freq 2000 --output_dir /workspace/outputs/switches_c40_k10 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  resume_command: python /workspace/lerobot_trossen/lerobot/scripts/train.py --resume=true
+    --config_path=/workspace/outputs/switches_c40_k10/checkpoints/last/pretrained_model
+    --dataset.repo_id /workspace/datasets/switches_c50_k10 --output_dir /workspace/outputs/switches_c40_k10
+    --save_freq 2000 --steps 1000000 --dataset.episodes=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+  working_dir: /workspace/lerobot_trossen
+  resources:
+    gpus: 1
   target: 2000
   tracker: lerobot
